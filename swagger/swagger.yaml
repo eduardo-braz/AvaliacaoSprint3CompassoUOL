@@ -1,0 +1,137 @@
+openapi: 3.0.1
+info:
+  title: API States
+  description: "Documentação de API apresentada a Sprint 3 do programa de bolsas de SpringBoot Compasso UOL"
+  version: 0.0.1
+  license:
+    name: 'Licença: GPLv3'
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+externalDocs:
+  description: Link projeto GitHub
+  url: https://github.com/eduardo-braz/AvaliacaoSprint3CompassoUOL.git
+servers:
+  - url: http://localhost:8080/api
+    description: Local Host
+    variables: {}
+paths:
+  /states:
+    post:
+      summary: Adiciona um novo estado a lista
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/EstadoForm'
+      responses:
+        '201':
+          $ref: '#/components/responses/Sucesso'
+    get:
+      summary: Filtra por região, maior população ou maior área
+      parameters: 
+        - name: filtro
+          in: query
+          schema:
+            type: string
+          required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/Sucesso'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          
+  /states/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+    get:
+      summary: Busca um estado por ID
+      responses:
+        '200':
+          $ref: '#/components/responses/Sucesso'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Remove um estado cadastrado
+      responses:
+        '200':
+          $ref: '#/components/responses/Sucesso'
+        '404':
+          $ref: '#/components/responses/NotFound'
+              
+    put:
+      summary: Altera um estado cadastrado
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/EstadoForm'
+      responses:
+        '200':
+          $ref: '#/components/responses/Sucesso'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    Estado:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        regiao:
+          type: string
+        populacao:
+          type: integer
+        capital:
+          type: string
+        area:
+          type: number
+          format: decimal
+    EstadoForm:
+      type: object
+      properties:
+        nome:
+          type: string
+        regiao:
+          type: string
+        populacao:
+          type: integer
+        capital:
+          type: string
+        area:
+          type: number
+          format: decimal
+    ListaEstados:
+      type: array
+      items:
+        $ref: '#/components/schemas/Estado'
+  responses:
+    BadRequest:
+      description: ID não encontrada
+      content:
+        application/json:
+          example: Not Found
+    Sucesso:
+      description: Sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            items:
+              $ref: '#/components/schemas/Estado'
+    NotFound:
+      description: ID não encontrada
+      content:
+        application/json:
+            example: Not Found
