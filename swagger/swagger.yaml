@@ -15,6 +15,7 @@ servers:
     variables: {}
   - url: https://61b4d1a30e84b70017331997.mockapi.io/api/
     description: MockAPI
+    variables: {}
 paths:
   /states:
     post:
@@ -93,6 +94,12 @@ components:
           type: string
         regiao:
           type: string
+          enum:
+          - Centro_Oeste
+          - Nordeste
+          - Norte
+          - Sudeste
+          - Sul
         populacao:
           type: integer
         capital:
@@ -107,6 +114,12 @@ components:
           type: string
         regiao:
           type: string
+          enum:
+          - Centro_Oeste
+          - Nordeste
+          - Norte
+          - Sudeste
+          - Sul
         populacao:
           type: integer
         capital:
