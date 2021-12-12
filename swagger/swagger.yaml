@@ -13,6 +13,8 @@ servers:
   - url: http://localhost:8080/api
     description: Local Host
     variables: {}
+  - url: https://61b4d1a30e84b70017331997.mockapi.io/api/
+    description: MockAPI
 paths:
   /states:
     post:
@@ -21,7 +23,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               items:
                 $ref: '#/components/schemas/EstadoForm'
       responses:
@@ -37,7 +38,7 @@ paths:
           required: true
       responses:
         '201':
-          $ref: '#/components/responses/Sucesso'
+          $ref: '#/components/responses/SucessoLista'
         '400':
           $ref: '#/components/responses/BadRequest'
           
@@ -70,7 +71,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               items:
                 $ref: '#/components/schemas/EstadoForm'
       responses:
@@ -80,6 +80,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
+security: 
+- autentication: []
 components:
   schemas:
     Estado:
@@ -116,18 +118,26 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Estado'
+  
   responses:
     BadRequest:
-      description: ID não encontrada
+      description: Parâmetro(s) Inválido(s)
       content:
         application/json:
-          example: Not Found
+          example: Parâmetro(s) Inválido(s)
+          
+    SucessoLista:
+      description: Sucesso
+      content:
+        application/json:
+          schema:
+            items:
+              $ref: '#/components/schemas/ListaEstados'      
     Sucesso:
       description: Sucesso
       content:
         application/json:
           schema:
-            type: object
             items:
               $ref: '#/components/schemas/Estado'
     NotFound:
@@ -135,3 +145,9 @@ components:
       content:
         application/json:
             example: Not Found
+            
+  securitySchemes:
+    autentication:
+      type: http
+      scheme: basic
+      
